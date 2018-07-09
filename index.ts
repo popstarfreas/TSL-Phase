@@ -56,6 +56,11 @@ class Phase extends Extension {
                 }
             }
         });
+
+        this._rabbit.publish("phase_in", JSON.stringify({
+            token: config.token,
+            type: "started"
+        }));
     }
 
     public handleClientConnect(client: Client): void {
