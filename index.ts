@@ -85,6 +85,12 @@ class Phase extends Extension {
         }
     }
 
+    public handleClientRename(client: Client, newName: string): void {
+        this.handleClientDisconnect(client);
+        client.player.name = newName;
+        this.handleClientConnect(client);
+    }
+
     public modifyChat(client: Client, message: ChatMessage): void {
         if (message.content.length === 0) {
             return;

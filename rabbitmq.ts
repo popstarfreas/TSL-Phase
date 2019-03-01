@@ -28,6 +28,13 @@ class RabbitMQ extends EventEmitter {
     try {
       const connection = await amqp.connect(connectionString);
       this._channel = await connection.createChannel();
+      connection.on("error", e => {
+        console.log(`RabbitMQ Error: ${e}`);
+      });
+      
+      this._channel.on("error", e => {
+        console.log(`RabbitMQ Channel Error: ${e}`);
+      });
     } catch (e) {
       console.log(`RabbitMQ Exception: ${e}`);
     }
@@ -57,7 +64,9 @@ class RabbitMQ extends EventEmitter {
     this._channel.bindQueue(queue.queue, exchange, "");
 
     this._channel.consume(queue.queue, (msg) => {
-        handler(JSON.parse(msg.content.toString()));
+        if (msg !== null) {
+          handler(JSON.parse(msg.content.toString()));
+        }
     },
     {
       noAck: true
@@ -70,9 +79,13 @@ class RabbitMQ extends EventEmitter {
    * @param exchange The exchange to publish to
    * @param message The message to publish to the exchange
    */
-  public publish(exchange: string, message: string): void {
+  public async publish(exchange: string, message: string) {
     if (typeof this._channel !== "undefined") {
-      this._channel.publish(exchange, "", new Buffer(message));
+      try {
+        this._channel.publish(exchange, "", new Buffer(message));
+      } catch (e) {
+        this.connect();
+      }
     }
   }
 }
