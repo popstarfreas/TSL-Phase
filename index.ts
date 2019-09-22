@@ -1,10 +1,8 @@
-import * as Winston from "winston";
-import ChatMessage from "../../chatmessage";
-import Client from "../../client";
-import Database from "../../database";
-import ChatPacketFactory from "../../packets/chatfactory";
-import TerrariaServer from "../../terrariaserver";
-import Extension from "../extension";
+import ChatMessage from "terrariaserver-lite/chatmessage";
+import Client from "terrariaserver-lite/client";
+import ChatPacketFactory from "terrariaserver-lite/packets/chatfactory";
+import TerrariaServer from "terrariaserver-lite/terrariaserver";
+import Extension from "terrariaserver-lite/extensions/extension";
 import { config } from "./configloader";
 import RabbitMQ from "./rabbitmq";
 
@@ -15,10 +13,19 @@ interface PhaseMessage {
 
 interface PhaseChatMessage extends PhaseMessage {
     content: string;
+    contentRaw: { plain: string, formatted: string };
     chatType: string;
+    originServer: string;
+    prefix: string | null;
+    suffix: string | null;
     R: number;
     G: number;
     B: number;
+    ip: string;
+    discussionId: number;
+    userId: number;
+    name: string;
+    accountName: string;
 }
 
 class Phase extends Extension {
@@ -29,11 +36,12 @@ class Phase extends Extension {
 
     constructor(server: TerrariaServer) {
         super(server);
-        this._rabbit = new RabbitMQ();
+        this._rabbit = new RabbitMQ(server.logger);
         this.connect();
     }
 
     public dispose(): void {
+        this.server.logger.info("Disposing Phase Extension. \n"+(new Error("Disposed at").stack))
         super.dispose();
         if (this._rabbit) {
             this._rabbit.close();
@@ -43,24 +51,39 @@ class Phase extends Extension {
     private async connect(): Promise<void> {
         await this._rabbit.connect();
         this._rabbit.subscribe(config.subExchangeName, (message: PhaseMessage) => {
-            if (message.token === config.token && message.type === "chat") {
-                const chatMessage = message as PhaseChatMessage;
-                const packet = ChatPacketFactory.make(chatMessage.content, {
-                    R: chatMessage.R,
-                    G: chatMessage.G,
-                    B: chatMessage.B
-                });
-
-                for (const client of this.server.clients) {
-                    client.sendPacket(packet);
-                }
-            }
+            this.handlePhaseMessage(message);
         });
 
         this._rabbit.publish("phase_in", JSON.stringify({
             token: config.token,
             type: "started"
         }));
+    }
+
+    private handlePhaseMessage(message: PhaseMessage): void {
+        if (message.token === config.token && message.type === "chat") {
+            const chatMessage = message as PhaseChatMessage;
+            let packet: Buffer;
+            if (chatMessage.prefix === null) {
+                packet = ChatPacketFactory.make(
+                    `${chatMessage.originServer}> <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`, {
+                    R: chatMessage.R,
+                    G: chatMessage.G,
+                    B: chatMessage.B
+                });
+            } else {
+                packet = ChatPacketFactory.make(
+                    `${chatMessage.originServer}> [${chatMessage.prefix}] <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`, {
+                        R: chatMessage.R,
+                        G: chatMessage.G,
+                        B: chatMessage.B
+                    });
+            }
+
+            for (const client of this.server.clients) {
+                client.sendPacket(packet);
+            }
+        }
     }
 
     public handleClientConnect(client: Client): void {

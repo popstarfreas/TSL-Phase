@@ -1,0 +1,23 @@
+{
+  "name": "phase",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "cd ./build && node --expose-gc ./app/index.js",
+    "build": "tsc -p ./",
+    "bstart": "tsc -p ./ && cd ./build && node --expose-gc ./app/index.js && cd ../",
+    "bstart-debug": "tsc -p ./ && cd ./build && node-debug ./index.js && cd ../"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib-auto-recovery": "^0.2.0",
+    "terrariaserver-lite": "file:D:/Windows.old/Users/aaren/Projects/terrariaserver-lite/bmodule"
+  },
+  "devDependencies": {
+    "@types/winston": "^2.4.4",
+    "@types/amqplib": "^0.5.12",
+    "@types/node": "^12.0.1",
+    "typescript": "^2.9.2"
+  }
+}
