@@ -11,13 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib-auto-recovery": "^0.2.0",
-    "terrariaserver-lite": "file:D:/Windows.old/Users/aaren/Projects/terrariaserver-lite/bmodule"
+    "amqplib-auto-recovery": "^0.2.0"
   },
   "devDependencies": {
-    "@types/winston": "^2.4.4",
     "@types/amqplib": "^0.5.12",
     "@types/node": "^12.0.1",
-    "typescript": "^2.9.2"
+    "terrariaserver-lite": "file:../../TerrariaServer-Lite/bmodule",
+    "typescript": "^3.9.3"
   }
 }

@@ -5,9 +5,9 @@
         "noImplicitAny": false,
         "sourceMap": false,
 	    "outDir": "build",
-        "strictNullChecks": true
+        "strict": true
     },
     "include": [
-        "**/*.ts",
-    ]
+        "app/*.ts",
+    ],
 }

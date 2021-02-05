@@ -1,19 +1,18 @@
 import * as amqp from "amqplib/callback_api";
 import { EventEmitter } from "events";
 import { Config, config } from "./configloader";
-import * as withAutoRecovery from "amqplib-auto-recovery";
 import * as winston from "winston";
 
 class RabbitMQ extends EventEmitter {
   private _connected: boolean;
-  private _connection: amqp.Connection;
+  private _connection!: amqp.Connection;
   private _channel?: amqp.Channel;
-  private _queue: string; 
+  private _queue!: string; 
   private _config: Config = config;
-  private _logger: winston.LoggerInstance;
+  private _logger: winston.Logger;
   private _subscription: { exchange: string; handler: (message: any) => void } | null = null;
 
-  constructor(logger: winston.LoggerInstance) {
+  constructor(logger: winston.Logger) {
     super();
     this._logger = logger;
     this._connected = false;
@@ -31,23 +30,22 @@ class RabbitMQ extends EventEmitter {
   public async connect(): Promise<void> {
     const connectionString = `amqp://${this._config.username}:${encodeURIComponent(this._config.password)}@${this._config.ip}:${this._config.port}/${this._config.vhost}`;
 
-    return new Promise<void>(async (resolve, reject) => {
-        withAutoRecovery(amqp, {}).connect(connectionString, async (err, connection) => {
+    return new Promise<void>( (resolve, reject) => {
+      console.log("Connecting...");
+        amqp.connect(connectionString, async (err, connection) => {
           if (err) {
             this._logger.error(`RabbitMQ Connect Error: ${err}`);
-            return reject();
+            return reject(err);
           }
+          console.log("Connected");
 
           this._connection = connection;
-          this._channel = await this.createChannel();
           this._connection.on("error", e => {
-            this._logger.error(`RabbitMQ Error: ${e}`);
+            this._logger.error(`RabbitMQ connection error: ${e.toString()}`);
+            reject(e);
           });
-          
-          this._channel.on("error", e => {
-            this._logger.error(`RabbitMQ Channel Error: ${e}`);
-          });
-          resolve();
+          this._channel = await this.createChannel();
+          this.emit("connected");
         });
     });
   }
@@ -56,9 +54,11 @@ class RabbitMQ extends EventEmitter {
     return new Promise((resolve, reject) => {
       this._connection.createChannel((err, channel) => {
         if (err) {
+          this._logger.error(`RabbitMQ channel error: ${err.toString()}`);
           return reject(err);
         }
 
+        console.log("Channel connected");
         resolve(channel);
       });
     });
@@ -90,6 +90,7 @@ class RabbitMQ extends EventEmitter {
             return reject(err);
           }
 
+          console.log("Connected queue.")
           resolve(ok);
         });
       }
@@ -110,11 +111,17 @@ class RabbitMQ extends EventEmitter {
       return;
     }
 
+    console.log("Subscribing to queue")
     this._queue = (await this.assertQueue("", { exclusive: true})).queue;
+    console.log("Subscribed to queue")
     this._channel.bindQueue(this._queue, exchange, "");
     this._channel.consume(this._queue, (msg) => {
-        if (msg !== null) {
-          handler(JSON.parse(msg.content.toString()));
+        try {
+            if (msg !== null) {
+              handler(JSON.parse(msg.content.toString()));
+            }
+        } catch(e) {
+          this._logger.error("Message consumption error: " + e.toString());
         }
     },
     {
@@ -131,15 +138,9 @@ class RabbitMQ extends EventEmitter {
   public async publish(exchange: string, message: string) {
     if (typeof this._channel !== "undefined") {
       try {
-        this._logger.info(`Publishing to ${exchange} message ${message}`)
         this._channel.publish(exchange, "", new Buffer(message));
       } catch (e) {
-        this._logger.error(e);
-        this._channel = undefined;
-        this._channel = await this.createChannel();
-        if (this._subscription) {
-          await this.subscribe(this._subscription.exchange, this._subscription.handler);
-        }
+        this._logger.error("Message publish error: " + e.toString());
       }
     }
   }

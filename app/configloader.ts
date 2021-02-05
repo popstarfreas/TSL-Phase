@@ -9,4 +9,4 @@ export interface Config {
     token: string;
 }
 
-export const config: Config = require(`${__dirname}/../../../../config/rabbitconfig.js`);
+export const config: Config = require(`${process.cwd()}/config/rabbitconfig.js`);
