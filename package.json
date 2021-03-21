@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/amqplib": "^0.5.12",
     "@types/node": "^12.0.1",
-    "terrariaserver-lite": "file:../../TerrariaServer-Lite/bmodule",
+    "terrariaserver-lite": "file:../../TerrariaServer-Lite/pluginreference",
     "typescript": "^3.9.3"
   }
 }
