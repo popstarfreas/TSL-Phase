@@ -145,7 +145,7 @@ function wait(ms) {
 class Phase extends Extension {
     public name = "Phase";
     public version = "v1.0";
-    public static order = 1;
+    public static order = 2;
     private _rabbit: RabbitMQ;
 
     constructor(server: TerrariaServer) {
