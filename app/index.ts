@@ -138,7 +138,7 @@ function makeFailureResponse(commandMessage: PhaseCommandMessage, response: stri
     };
 }
 
-function wait(ms) {
+function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(() => resolve(), ms));
 }
 
