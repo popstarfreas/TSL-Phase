@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/winston": "^2.4.4",
+    "amqplib": "^0.7.1",
     "amqplib-auto-recovery": "^0.2.0"
   },
   "devDependencies": {
