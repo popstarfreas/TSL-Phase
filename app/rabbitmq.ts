@@ -5,7 +5,7 @@ import * as winston from "winston";
 
 class RabbitMQ extends EventEmitter {
   private _connected: boolean;
-  private _connection!: amqp.Connection;
+  private _connection?: amqp.Connection;
   private _channel?: amqp.Channel;
   private _queue!: string; 
   private _config: Config = config;
@@ -52,7 +52,7 @@ class RabbitMQ extends EventEmitter {
 
   private createChannel(): Promise<amqp.Channel> {
     return new Promise((resolve, reject) => {
-      this._connection.createChannel((err, channel) => {
+      this._connection?.createChannel((err, channel) => {
         if (err) {
           this._logger.error(`RabbitMQ channel error: ${err.toString()}`);
           return reject(err);
@@ -65,9 +65,8 @@ class RabbitMQ extends EventEmitter {
   }
 
   public close(): void {
-    if (typeof this._channel !== "undefined") {
-      this._channel.close(e => e ? this._logger.error(`RabbitMQ Channel Close Error: ${e}`) : {});
-    }
+      this._channel?.close(e => e ? this._logger.error(`RabbitMQ Channel Close Error: ${e}`) : {});
+      this._connection?.close(e => e ? this._logger.error(`RabbitMQ Connection Close Error: ${e}`) : {});
   }
 
   /**
