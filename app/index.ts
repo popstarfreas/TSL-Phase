@@ -5,6 +5,7 @@ import TerrariaServer from "terrariaserver-lite/terrariaserver";
 import Extension from "terrariaserver-lite/extensions/extension";
 import { config } from "./configloader";
 import RabbitMQ from "./rabbitmq";
+import * as util from "util";
 
 interface PhaseMessage {
     token: string;
@@ -197,25 +198,44 @@ class Phase extends Extension {
 
         if (message.type === "chat") {
             const chatMessage = message as PhaseChatMessage;
-            let packet: Buffer;
+            let packet: Buffer | null = null;
             if (chatMessage.prefix === null) {
-                packet = ChatPacketFactory.make(
-                    `${chatMessage.originServer}> <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`, {
-                    R: chatMessage.R,
-                    G: chatMessage.G,
-                    B: chatMessage.B
-                });
+                try {
+                    const message = `${chatMessage.originServer}> <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`;
+                    packet = ChatPacketFactory.make(
+                        message,
+                        {
+                            R: chatMessage.R,
+                            G: chatMessage.G,
+                            B: chatMessage.B
+                        }
+                    );
+                } catch(e) {
+                    const error = util.inspect(e, { showHidden: false, depth: null });
+                    this.server.logger.error(`Encountered error trying to send this message:"${message}"\nError: ${error}`)
+                }
             } else {
-                packet = ChatPacketFactory.make(
-                    `${chatMessage.originServer}> [${chatMessage.prefix}] <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`, {
-                        R: chatMessage.R,
-                        G: chatMessage.G,
-                        B: chatMessage.B
-                    });
+                const message = `${chatMessage.originServer}> [${chatMessage.prefix}] <${chatMessage.name}> ${chatMessage.suffix || ""}: ${chatMessage.contentRaw.plain}`;
+                try {
+                    packet = ChatPacketFactory.make(
+                        message,
+                        {
+                            R: chatMessage.R,
+                            G: chatMessage.G,
+                            B: chatMessage.B
+                        }
+                    );
+                } catch(e) {
+                    const error = util.inspect(e, { showHidden: false, depth: null });
+                    this.server.logger.error(`Encountered error trying to send this message:"${message}"\nError: ${error}`)
+                }
             }
 
-            for (const client of this.server.clients) {
-                client.sendPacket(packet);
+            if (packet != null)
+            {
+                for (const client of this.server.clients) {
+                    client.sendPacket(packet);
+                }
             }
         } else if (message.type === "command") {
             this.handlePhaseCommand(message as PhaseCommandMessage);
