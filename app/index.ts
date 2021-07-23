@@ -153,6 +153,7 @@ class Phase extends Extension {
         super(server);
         this._rabbit = new RabbitMQ(server.logger);
         this._rabbit.on("connected", () => this.onConnect());
+        this._rabbit.on("close", (e) => this.onClose(e));
         this.doConnect();
     }
 
@@ -393,6 +394,19 @@ class Phase extends Extension {
                 accountName: user !== null ? user.name : ""
             }));
         }
+    }
+
+    private onClose(error?: any) {
+        // error is not null in the case of a server-initiated close or an error
+        // http://www.squaremobius.net/amqp.node/channel_api.html#model_events
+        if (error) {
+            console.error("AMQP Connection closed", error);
+        } else {
+            console.info("AMQP Connection closed");
+        }
+
+        // Reconnect
+        this.doConnect();
     }
 }
 

@@ -44,6 +44,7 @@ class RabbitMQ extends EventEmitter {
             this._logger.error(`RabbitMQ connection error: ${e.toString()}`);
             reject(e);
           });
+          this._connection.on("close", (e) => this.emit("close", e));
           this._channel = await this.createChannel();
           this.emit("connected");
         });
