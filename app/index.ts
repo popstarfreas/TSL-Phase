@@ -149,11 +149,11 @@ class Phase extends Extension {
     public version = "v1.0";
     public static order = 2;
     private _rabbit: RabbitMQ;
-    private _logger: Winston.Logger;
+    private _amqpLogger: Winston.Logger;
 
     constructor(server: TerrariaServer) {
         super(server);
-        this._logger = server.logger.child({
+        this._amqpLogger = server.logger.child({
             name: "Phase.AMQPConnection"
         });
         this._rabbit = new RabbitMQ(server.logger);
@@ -405,9 +405,9 @@ class Phase extends Extension {
         // error is not null in the case of a server-initiated close or an error
         // http://www.squaremobius.net/amqp.node/channel_api.html#model_events
         if (error) {
-            this._logger.error("AMQP Connection closed", error);
+            this._amqpLogger.error("AMQP Connection closed", error);
         } else {
-            this._logger.info("AMQP Connection closed");
+            this._amqpLogger.info("AMQP Connection closed");
         }
 
         // Reconnect
