@@ -348,7 +348,8 @@ class Phase extends Extension {
                 token: config.token,
                 type: "player_join",
                 name: client.player.name,
-                ip: client.ip
+                ip: client.ip,
+                uuid: client.player.uuid,
             }));
         }
     }
@@ -359,7 +360,8 @@ class Phase extends Extension {
                 token: config.token,
                 type: "player_leave",
                 name: client.player.name,
-                ip: client.ip
+                ip: client.ip,
+                uuid: client.player.uuid,
             }));
         }
     }
@@ -390,7 +392,8 @@ class Phase extends Extension {
                 B: group.color.split(",")[2],
                 ip: client.ip,
                 id: user !== null ? user.id : -1,
-                accountName: user !== null ? user.name : ""
+                accountName: user !== null ? user.name : "",
+                uuid: client.player.uuid,
             }));
         }
     }
