@@ -161,7 +161,7 @@ class Phase extends Extension {
             try {
                 await this.connect();
                 return;
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
                 await wait(5000);
             }
@@ -180,7 +180,7 @@ class Phase extends Extension {
     }
 
     public dispose(): void {
-        this.server.logger.info("Disposing Phase Extension. \n"+(new Error("Disposed at").stack))
+        this.server.logger.info("Disposing Phase Extension. \n" + (new Error("Disposed at").stack))
         super.dispose();
         if (this._rabbit) {
             this._rabbit.close();
@@ -210,7 +210,7 @@ class Phase extends Extension {
                             B: chatMessage.B
                         }
                     );
-                } catch(e) {
+                } catch (e) {
                     const error = util.inspect(e, { showHidden: false, depth: null });
                     this.server.logger.error(`Encountered error trying to send this message:"${message}"\nError: ${error}`)
                 }
@@ -225,14 +225,13 @@ class Phase extends Extension {
                             B: chatMessage.B
                         }
                     );
-                } catch(e) {
+                } catch (e) {
                     const error = util.inspect(e, { showHidden: false, depth: null });
                     this.server.logger.error(`Encountered error trying to send this message:"${message}"\nError: ${error}`)
                 }
             }
 
-            if (packet != null)
-            {
+            if (packet != null) {
                 for (const client of this.server.clients) {
                     client.sendPacket(packet);
                 }
@@ -246,97 +245,97 @@ class Phase extends Extension {
         let response: PhaseCommandResponse = makeFailureResponse(commandMessage, "Could not determine command");
         switch (commandMessage.commandName) {
             case "kick": {
-                    let client: Client | undefined = undefined;
-                    let name = "";
-                    if (commandMessage.kickType === "playerName") {
-                        client = this.server.clients.find(client => client.player.name === commandMessage.playerName);
-                        name = commandMessage.playerName;
-                    } else if (commandMessage.kickType === "accountName") {
-                        client = this.server.clients.find(client => this.server.userManager.getUser(client)?.name === commandMessage.accountName);
-                        name = commandMessage.accountName;
-                    }
-
-                    response = makeFailureResponse(commandMessage, `No such player "${name}.`);
-                    if (typeof client !== "undefined") {
-                        client.disconnect(commandMessage.reason);
-                        response = makeSuccessResponse(commandMessage, `Successfully kicked player "${name}".`);
-                    }
+                let client: Client | undefined = undefined;
+                let name = "";
+                if (commandMessage.kickType === "playerName") {
+                    client = this.server.clients.find(client => client.player.name === commandMessage.playerName);
+                    name = commandMessage.playerName;
+                } else if (commandMessage.kickType === "accountName") {
+                    client = this.server.clients.find(client => this.server.userManager?.getUser(client)?.name === commandMessage.accountName);
+                    name = commandMessage.accountName;
                 }
+
+                response = makeFailureResponse(commandMessage, `No such player "${name}.`);
+                if (typeof client !== "undefined") {
+                    client.disconnect(commandMessage.reason);
+                    response = makeSuccessResponse(commandMessage, `Successfully kicked player "${name}".`);
+                }
+            }
                 break;
             case "mute":
                 response = makeFailureResponse(commandMessage, `Muting is not supported on this dimension.`);
                 break;
             case "ban": {
-                    let client: Client | undefined = undefined;
-                    let name = commandMessage.banType !== "accountName" ? commandMessage.playerName : commandMessage.accountName;
-                    let ip: string | undefined = undefined;
-                    if (commandMessage.banType === "playerName") {
-                        client = this.server.clients.find(client => client.player.name === commandMessage.playerName);
-                    } else if (commandMessage.banType === "accountName") {
-                        client = this.server.clients.find(client => this.server.userManager.getUser(client)?.name === commandMessage.accountName);
-                    } else if (commandMessage.banType === "playerIP") {
-                        ip = commandMessage.playerIP;
-                        client = this.server.clients.find(client =>
-                            this.server.userManager.getUser(client)?.name === commandMessage.playerName
-                            && client.ip === ip
-                        );
-                    }
+                let client: Client | undefined = undefined;
+                let name = commandMessage.banType !== "accountName" ? commandMessage.playerName : commandMessage.accountName;
+                let ip: string | undefined = undefined;
+                if (commandMessage.banType === "playerName") {
+                    client = this.server.clients.find(client => client.player.name === commandMessage.playerName);
+                } else if (commandMessage.banType === "accountName") {
+                    client = this.server.clients.find(client => this.server.userManager?.getUser(client)?.name === commandMessage.accountName);
+                } else if (commandMessage.banType === "playerIP") {
+                    ip = commandMessage.playerIP;
+                    client = this.server.clients.find(client =>
+                        this.server.userManager?.getUser(client)?.name === commandMessage.playerName
+                        && client.ip === ip
+                    );
+                }
 
-                    const banningUser = await this.server.userManager.getUserByName(commandMessage.commandUserName);
-                    if (typeof client !== "undefined") {
-                        const result = await this.server.banManager.banClient(client, commandMessage.reason, banningUser);
+                const banningUser = await this.server.userManager?.getUserByName(commandMessage.commandUserName);
+                if (typeof client !== "undefined") {
+                    const result = await this.server.banManager.banClient(client, commandMessage.reason, banningUser);
+                    switch (result.type) {
+                        case "OK":
+                            response = makeSuccessResponse(commandMessage, `Successfully banned player "${name}"`);
+                            break;
+                        case "ERROR":
+                            response = makeFailureResponse(commandMessage, `Encountered an error trying to ban player "${name}"`);
+                            break;
+                    }
+                } else if (commandMessage.offline && commandMessage.banType === "accountName") {
+                    const user = await this.server.userManager?.getUserByName(name);
+                    if (typeof user !== "undefined" && user !== null) {
+                        const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
                         switch (result.type) {
                             case "OK":
-                                response = makeSuccessResponse(commandMessage, `Successfully banned player "${name}"`);
+                                response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
                                 break;
                             case "ERROR":
-                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban player "${name}"`);
-                                break;
-                        }
-                    } else if (commandMessage.offline && commandMessage.banType === "accountName") {
-                        const user = await this.server.userManager.getUserByName(name);
-                        if (user !== null) {
-                            const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
-                            switch (result.type) {
-                                case "OK":
-                                    response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
-                                    break;
-                                case "ERROR":
-                                    response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
-                                    break;
-                            }
-                        } else {
-                            response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
-                        }
-                    } else if (commandMessage.offline && commandMessage.banType === "playerName") {
-                        const user = await this.server.userManager.getUserByName(name);
-                        if (user !== null) {
-                            const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
-                            switch (result.type) {
-                                case "OK":
-                                    response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
-                                    break;
-                                case "ERROR":
-                                    response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
-                                    break;
-                            }
-                        } else {
-                            response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
-                        }
-                    } else if (commandMessage.offline && commandMessage.banType === "playerIP" && typeof ip !== "undefined") {
-                        const result = await this.server.banManager.banIp(ip, name, null, null, commandMessage.reason, banningUser);
-                        switch (result.type) {
-                            case "OK":
-                                response = makeSuccessResponse(commandMessage, `Successfully banned ip "${ip}"`);
-                                break;
-                            case "ERROR":
-                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban ip "${ip}"`);
+                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
                                 break;
                         }
                     } else {
-                        response = makeFailureResponse(commandMessage, `Couldn't find player to ban. Trying using -o to specify an offline ban.`);
+                        response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
                     }
+                } else if (commandMessage.offline && commandMessage.banType === "playerName") {
+                    const user = await this.server.userManager?.getUserByName(name);
+                    if (typeof user !== "undefined" && user !== null) {
+                        const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
+                        switch (result.type) {
+                            case "OK":
+                                response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
+                                break;
+                            case "ERROR":
+                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
+                                break;
+                        }
+                    } else {
+                        response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
+                    }
+                } else if (commandMessage.offline && commandMessage.banType === "playerIP" && typeof ip !== "undefined") {
+                    const result = await this.server.banManager.banIp(ip, name, null, null, commandMessage.reason, banningUser);
+                    switch (result.type) {
+                        case "OK":
+                            response = makeSuccessResponse(commandMessage, `Successfully banned ip "${ip}"`);
+                            break;
+                        case "ERROR":
+                            response = makeFailureResponse(commandMessage, `Encountered an error trying to ban ip "${ip}"`);
+                            break;
+                    }
+                } else {
+                    response = makeFailureResponse(commandMessage, `Couldn't find player to ban. Trying using -o to specify an offline ban.`);
                 }
+            }
                 break;
         }
         this._rabbit.publish("phase_in", JSON.stringify(response));
@@ -377,9 +376,9 @@ class Phase extends Extension {
             return;
         }
 
-        const user = this.server.userManager.getUser(client);
-        const group = this.server.userManager.getUserGroup(client);
-        if (group !== null) {
+        const user = this.server.userManager?.getUser(client);
+        const group = this.server.userManager?.getUserGroup(client);
+        if (typeof group !== "undefined" && group !== null) {
             this._rabbit.publish("phase_in", JSON.stringify({
                 token: config.token,
                 type: "player_chat",
@@ -391,8 +390,8 @@ class Phase extends Extension {
                 G: group.color.split(",")[1],
                 B: group.color.split(",")[2],
                 ip: client.ip,
-                id: user !== null ? user.id : -1,
-                accountName: user !== null ? user.name : "",
+                id: typeof user !== "undefined" && user !== null ? user.id : -1,
+                accountName: typeof user !== "undefined" && user !== null ? user.name : "",
                 uuid: client.player.uuid,
             }));
         }

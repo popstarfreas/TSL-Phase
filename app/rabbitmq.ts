@@ -7,7 +7,7 @@ class RabbitMQ extends EventEmitter {
   private _connected: boolean;
   private _connection?: amqp.Connection;
   private _channel?: amqp.Channel;
-  private _queue!: string; 
+  private _queue!: string;
   private _config: Config = config;
   private _logger: winston.Logger;
   private _subscription: { exchange: string; handler: (message: any) => void } | null = null;
@@ -30,23 +30,23 @@ class RabbitMQ extends EventEmitter {
   public async connect(): Promise<void> {
     const connectionString = `amqp://${this._config.username}:${encodeURIComponent(this._config.password)}@${this._config.ip}:${this._config.port}/${this._config.vhost}`;
 
-    return new Promise<void>( (resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       console.log("Connecting...");
-        amqp.connect(connectionString, async (err, connection) => {
-          if (err) {
-            this._logger.error(`RabbitMQ Connect Error: ${err}`);
-            return reject(err);
-          }
-          console.log("Connected");
+      amqp.connect(connectionString, async (err, connection) => {
+        if (err) {
+          this._logger.error(`RabbitMQ Connect Error: ${err}`);
+          return reject(err);
+        }
+        console.log("Connected");
 
-          this._connection = connection;
-          this._connection.on("error", e => {
-            this._logger.error(`RabbitMQ connection error: ${e.toString()}`);
-            reject(e);
-          });
-          this._channel = await this.createChannel();
-          this.emit("connected");
+        this._connection = connection;
+        this._connection.on("error", e => {
+          this._logger.error(`RabbitMQ connection error: ${e.toString()}`);
+          reject(e);
         });
+        this._channel = await this.createChannel();
+        this.emit("connected");
+      });
     });
   }
 
@@ -65,8 +65,8 @@ class RabbitMQ extends EventEmitter {
   }
 
   public close(): void {
-      this._channel?.close(e => e ? this._logger.error(`RabbitMQ Channel Close Error: ${e}`) : {});
-      this._connection?.close(e => e ? this._logger.error(`RabbitMQ Connection Close Error: ${e}`) : {});
+    this._channel?.close(e => e ? this._logger.error(`RabbitMQ Channel Close Error: ${e}`) : {});
+    this._connection?.close(e => e ? this._logger.error(`RabbitMQ Connection Close Error: ${e}`) : {});
   }
 
   /**
@@ -83,8 +83,8 @@ class RabbitMQ extends EventEmitter {
 
   private assertQueue(name: string, options?: amqp.Options.AssertQueue): Promise<amqp.Replies.AssertQueue> {
     return new Promise<amqp.Replies.AssertQueue>((resolve, reject) => {
-        if (typeof this._channel !== "undefined") {
-          this._channel.assertQueue(name, options, (err, ok) => {
+      if (typeof this._channel !== "undefined") {
+        this._channel.assertQueue(name, options, (err, ok) => {
           if (err) {
             return reject(err);
           }
@@ -111,21 +111,25 @@ class RabbitMQ extends EventEmitter {
     }
 
     console.log("Subscribing to queue")
-    this._queue = (await this.assertQueue("", { exclusive: true})).queue;
+    this._queue = (await this.assertQueue("", { exclusive: true })).queue;
     console.log("Subscribed to queue")
     this._channel.bindQueue(this._queue, exchange, "");
     this._channel.consume(this._queue, (msg) => {
-        try {
-            if (msg !== null) {
-              handler(JSON.parse(msg.content.toString()));
-            }
-        } catch(e) {
-          this._logger.error("Message consumption error: " + e.toString());
+      try {
+        if (msg !== null) {
+          handler(JSON.parse(msg.content.toString()));
         }
+      } catch (e) {
+        if (e instanceof Error) {
+          this._logger.error("Message consumption error: " + e.toString());
+        } else {
+          this._logger.error("Message consumption error: unknown");
+        }
+      }
     },
-    {
-      noAck: true
-    });
+      {
+        noAck: true
+      });
   }
 
   /**
@@ -139,7 +143,11 @@ class RabbitMQ extends EventEmitter {
       try {
         this._channel.publish(exchange, "", new Buffer(message));
       } catch (e) {
-        this._logger.error("Message publish error: " + e.toString());
+        if (e instanceof Error) {
+          this._logger.error("Message publish error: " + e.toString());
+        } else {
+          this._logger.error("Message publish error: unknown");
+        }
       }
     }
   }

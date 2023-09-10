@@ -14,12 +14,10 @@
     "@types/winston": "^2.4.4",
     "amqplib": "^0.7.1",
     "amqplib-auto-recovery": "^0.2.0",
-    "bs-platform": "^9.0.2"
-  },
-  "devDependencies": {
-    "@types/amqplib": "^0.5.12",
-    "@types/node": "^12.0.1",
-    "terrariaserver-lite": "file:../../TerrariaServer-Lite/pluginreference",
-    "typescript": "^3.9.3"
+    "@darkgaming/rescript-terrariapacket": "github:popstarfreas/rescript-terrariapacket#3c76ed0",
+    "@types/node": "^20.6.0",
+    "terrariaserver-lite": "./TerrariaServer-Lite/pluginreference",
+    "typescript": "^5.2.2",
+    "@types/amqplib": "^0.5.12"
   }
 }

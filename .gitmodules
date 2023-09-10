@@ -1,0 +1,3 @@
+[submodule "TerrariaServer-Lite"]
+	path = TerrariaServer-Lite
+	url = git@github.com:popstarfreas/TerrariaServer-Lite.git
