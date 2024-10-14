@@ -148,12 +148,14 @@ class Phase extends Extension {
     public version = "v1.0";
     public static order = 2;
     private _rabbit: RabbitMQ;
+    private _syncOnlinePlayersTimer: NodeJS.Timeout | null = null;
 
     constructor(server: TerrariaServer) {
         super(server);
         this._rabbit = new RabbitMQ(server.logger);
         this._rabbit.on("connected", () => this.onConnect());
         this.doConnect();
+        this._syncOnlinePlayersTimer = setInterval(() => this.syncOnlinePlayers(server), 1000);
     }
 
     private async doConnect() {
@@ -184,6 +186,10 @@ class Phase extends Extension {
         super.dispose();
         if (this._rabbit) {
             this._rabbit.close();
+        }
+        const timer = this._syncOnlinePlayersTimer;
+        if (timer) {
+            clearInterval(timer);
         }
     }
 
@@ -369,6 +375,21 @@ class Phase extends Extension {
         this.handleClientDisconnect(client);
         client.player.name = newName;
         this.handleClientConnect(client);
+    }
+
+    syncOnlinePlayers(server: TerrariaServer) {
+        const players = server.clients.map(client => {
+            return {
+                name: client.player.name,
+                uuid: client.player.uuid,
+                ip: client.ip,
+            }
+        })
+        this._rabbit.publish("phase_in", JSON.stringify({
+            token: config.token,
+            type: "online_players",
+            players: players,
+        }));
     }
 
     public modifyChat(client: Client, message: ChatMessage): void {
