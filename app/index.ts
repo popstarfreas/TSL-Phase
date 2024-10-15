@@ -11,6 +11,7 @@ import * as uuid from "uuid";
 interface PhaseMessage {
     token: string;
     type: string;
+    excludeInstanceIds?: string[];
 }
 
 interface PhaseChatMessage extends PhaseMessage {
@@ -205,6 +206,10 @@ class Phase extends Extension {
 
     private handlePhaseMessage(message: PhaseMessage): void {
         if (message.token !== config.token) {
+            return;
+        }
+
+        if (message.excludeInstanceIds && message.excludeInstanceIds.includes(this._instanceId.toString())) {
             return;
         }
 
