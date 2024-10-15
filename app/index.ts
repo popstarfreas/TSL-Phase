@@ -161,7 +161,7 @@ class Phase extends Extension {
         this._rabbit = new RabbitMQ(server.logger);
         this._rabbit.on("connected", () => this.onConnect());
         this.doConnect();
-        this._syncOnlinePlayersTimer = setInterval(() => this.syncOnlinePlayers(server), 1000);
+        this._syncOnlinePlayersTimer = setInterval(() => this.syncOnlinePlayers(server), 5000);
     }
 
     private async doConnect() {
