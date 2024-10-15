@@ -16,7 +16,7 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@darkgaming/rescript-terrariapacket@github:popstarfreas/rescript-terrariapacket#3c76ed0", "rescript-terrariapacket@github:popstarfreas/rescript-terrariapacket#3c76ed0":
+"@darkgaming/rescript-terrariapacket@github:popstarfreas/rescript-terrariapacket#3c76ed0":
   version "1.2.0"
   resolved "https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/3c76ed05a564ba465036734206e37b0df7851f98"
   dependencies:
@@ -949,6 +949,15 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
+"rescript-terrariapacket@github:popstarfreas/rescript-terrariapacket#3c76ed0":
+  version "1.2.0"
+  resolved "https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/3c76ed05a564ba465036734206e37b0df7851f98"
+  dependencies:
+    "@popstarfreas/packetfactory" "^5.0.0"
+    "@popstarfreas/rescript-nodejs" "github:popstarfreas/rescript-nodejs#master"
+    rescript "^10.1.0"
+    typescript "^5.2.2"
+
 rescript@^10.1.0, rescript@^10.1.4:
   version "10.1.4"
   resolved "https://registry.yarnpkg.com/rescript/-/rescript-10.1.4.tgz#0f37710d371f32a704f17b4e804f66ce3c79a305"
@@ -1197,6 +1206,11 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+uuid@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-10.0.0.tgz#5a95aa454e6e002725c79055fd42aaba30ca6294"
+  integrity sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==
 
 uuid@^3.2.1:
   version "3.4.0"

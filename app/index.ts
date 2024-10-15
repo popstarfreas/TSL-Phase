@@ -6,6 +6,7 @@ import Extension from "terrariaserver-lite/extensions/extension";
 import { config } from "./configloader";
 import RabbitMQ from "./rabbitmq";
 import * as util from "util";
+import * as uuid from "uuid";
 
 interface PhaseMessage {
     token: string;
@@ -103,6 +104,7 @@ type PhaseCommandMessage = PhaseKickCommandMessage | PhaseBanCommandMessage | Ph
 
 interface GenericPhaseCommandResponse {
     type: "commandResponse";
+    instanceId: string;
     sender: string;
     discID: number;
 }
@@ -119,9 +121,10 @@ interface PhaseCommandFailureResponse extends GenericPhaseCommandResponse {
 
 type PhaseCommandResponse = PhaseCommandSuccessResponse | PhaseCommandFailureResponse;
 
-function makeSuccessResponse(commandMessage: PhaseCommandMessage, response: string): PhaseCommandSuccessResponse {
+function makeSuccessResponse(instanceId: string, commandMessage: PhaseCommandMessage, response: string): PhaseCommandSuccessResponse {
     return {
         type: "commandResponse",
+        instanceId,
         sender: commandMessage.sender,
         discID: commandMessage.discID,
         state: "success",
@@ -129,9 +132,10 @@ function makeSuccessResponse(commandMessage: PhaseCommandMessage, response: stri
     };
 }
 
-function makeFailureResponse(commandMessage: PhaseCommandMessage, response: string): PhaseCommandFailureResponse {
+function makeFailureResponse(instanceId: string, commandMessage: PhaseCommandMessage, response: string): PhaseCommandFailureResponse {
     return {
         type: "commandResponse",
+        instanceId,
         sender: commandMessage.sender,
         discID: commandMessage.discID,
         state: "failure",
@@ -149,6 +153,7 @@ class Phase extends Extension {
     public static order = 2;
     private _rabbit: RabbitMQ;
     private _syncOnlinePlayersTimer: NodeJS.Timeout | null = null;
+    private _instanceId = uuid.v4();
 
     constructor(server: TerrariaServer) {
         super(server);
@@ -177,7 +182,8 @@ class Phase extends Extension {
 
         this._rabbit.publish("phase_in", JSON.stringify({
             token: config.token,
-            type: "started"
+            type: "started",
+            instanceId: this._instanceId.toString(),
         }));
     }
 
@@ -248,7 +254,7 @@ class Phase extends Extension {
     }
 
     private async handlePhaseCommand(commandMessage: PhaseCommandMessage) {
-        let response: PhaseCommandResponse = makeFailureResponse(commandMessage, "Could not determine command");
+        let response: PhaseCommandResponse = makeFailureResponse(this._instanceId.toString(), commandMessage, "Could not determine command");
         switch (commandMessage.commandName) {
             case "kick": {
                 let client: Client | undefined = undefined;
@@ -261,15 +267,15 @@ class Phase extends Extension {
                     name = commandMessage.accountName;
                 }
 
-                response = makeFailureResponse(commandMessage, `No such player "${name}.`);
+                response = makeFailureResponse(this._instanceId.toString(), commandMessage, `No such player "${name}.`);
                 if (typeof client !== "undefined") {
                     client.disconnect(commandMessage.reason);
-                    response = makeSuccessResponse(commandMessage, `Successfully kicked player "${name}".`);
+                    response = makeSuccessResponse(this._instanceId.toString(), commandMessage, `Successfully kicked player "${name}".`);
                 }
             }
                 break;
             case "mute":
-                response = makeFailureResponse(commandMessage, `Muting is not supported on this dimension.`);
+                response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Muting is not supported on this dimension.`);
                 break;
             case "ban": {
                 let client: Client | undefined = undefined;
@@ -292,10 +298,10 @@ class Phase extends Extension {
                     const result = await this.server.banManager.banClient(client, commandMessage.reason, banningUser);
                     switch (result.type) {
                         case "OK":
-                            response = makeSuccessResponse(commandMessage, `Successfully banned player "${name}"`);
+                            response = makeSuccessResponse(this._instanceId.toString(), commandMessage, `Successfully banned player "${name}"`);
                             break;
                         case "ERROR":
-                            response = makeFailureResponse(commandMessage, `Encountered an error trying to ban player "${name}"`);
+                            response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Encountered an error trying to ban player "${name}"`);
                             break;
                     }
                 } else if (commandMessage.offline && commandMessage.banType === "accountName") {
@@ -304,14 +310,14 @@ class Phase extends Extension {
                         const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
                         switch (result.type) {
                             case "OK":
-                                response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
+                                response = makeSuccessResponse(this._instanceId.toString(), commandMessage, `Successfully banned user account "${name}"`);
                                 break;
                             case "ERROR":
-                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
+                                response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Encountered an error trying to ban user account "${name}"`);
                                 break;
                         }
                     } else {
-                        response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
+                        response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Could not find user account "${name}" to ban.`);
                     }
                 } else if (commandMessage.offline && commandMessage.banType === "playerName") {
                     const user = await this.server.userManager?.getUserByName(name);
@@ -319,27 +325,27 @@ class Phase extends Extension {
                         const result = await this.server.banManager.banAccount(user, commandMessage.reason, banningUser);
                         switch (result.type) {
                             case "OK":
-                                response = makeSuccessResponse(commandMessage, `Successfully banned user account "${name}"`);
+                                response = makeSuccessResponse(this._instanceId.toString(), commandMessage, `Successfully banned user account "${name}"`);
                                 break;
                             case "ERROR":
-                                response = makeFailureResponse(commandMessage, `Encountered an error trying to ban user account "${name}"`);
+                                response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Encountered an error trying to ban user account "${name}"`);
                                 break;
                         }
                     } else {
-                        response = makeFailureResponse(commandMessage, `Could not find user account "${name}" to ban.`);
+                        response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Could not find user account "${name}" to ban.`);
                     }
                 } else if (commandMessage.offline && commandMessage.banType === "playerIP" && typeof ip !== "undefined") {
                     const result = await this.server.banManager.banIp(ip, name, null, null, commandMessage.reason, banningUser);
                     switch (result.type) {
                         case "OK":
-                            response = makeSuccessResponse(commandMessage, `Successfully banned ip "${ip}"`);
+                            response = makeSuccessResponse(this._instanceId.toString(), commandMessage, `Successfully banned ip "${ip}"`);
                             break;
                         case "ERROR":
-                            response = makeFailureResponse(commandMessage, `Encountered an error trying to ban ip "${ip}"`);
+                            response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Encountered an error trying to ban ip "${ip}"`);
                             break;
                     }
                 } else {
-                    response = makeFailureResponse(commandMessage, `Couldn't find player to ban. Trying using -o to specify an offline ban.`);
+                    response = makeFailureResponse(this._instanceId.toString(), commandMessage, `Couldn't find player to ban. Trying using -o to specify an offline ban.`);
                 }
             }
                 break;
@@ -352,6 +358,7 @@ class Phase extends Extension {
             this._rabbit.publish("phase_in", JSON.stringify({
                 token: config.token,
                 type: "player_join",
+                instanceId: this._instanceId.toString(),
                 name: client.player.name,
                 ip: client.ip,
                 uuid: client.player.uuid,
@@ -364,6 +371,7 @@ class Phase extends Extension {
             this._rabbit.publish("phase_in", JSON.stringify({
                 token: config.token,
                 type: "player_leave",
+                instanceId: this._instanceId.toString(),
                 name: client.player.name,
                 ip: client.ip,
                 uuid: client.player.uuid,
@@ -388,6 +396,7 @@ class Phase extends Extension {
         this._rabbit.publish("phase_in", JSON.stringify({
             token: config.token,
             type: "online_players",
+            instanceId: this._instanceId.toString(),
             players: players,
         }));
     }
@@ -403,6 +412,7 @@ class Phase extends Extension {
             this._rabbit.publish("phase_in", JSON.stringify({
                 token: config.token,
                 type: "player_chat",
+                instanceId: this._instanceId.toString(),
                 name: client.player.name,
                 prefix: group.prefix,
                 suffix: group.suffix,
