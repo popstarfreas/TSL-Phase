@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-pnpm install \
+ROOT="${PNPM_WORKSPACE_DIR:-$PWD}"
+MODULES_DIR="$ROOT/out/node_modules"
+VSTORE_DIR="$MODULES_DIR/.pnpm"
+
+mkdir -p "$VSTORE_DIR"
+
+# Use corepack to ensure a modern pnpm and pin the workspace to this repo.
+PNPM_WORKSPACE_DIR="$ROOT" corepack pnpm install \
   --prod \
-  --workspace-dir "$PWD" \
-  --dir "$PWD" \
-  --modules-dir "$(realpath out/node_modules)" \
-  --virtual-store-dir "$(realpath out/node_modules/.pnpm) \
-  --frozen-lockfile # drop if lockfile needs refresh
+  --frozen-lockfile \
+  --dir "$ROOT" \
+  --modules-dir "$MODULES_DIR" \
+  --virtual-store-dir "$VSTORE_DIR"
