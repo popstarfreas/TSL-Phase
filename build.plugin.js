@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import child_process from "node:child_process";
 
-conosle.log("Running `pnpm i`")
+console.log("Running `pnpm i`")
 child_process.execSync("pnpm i", { stdio: "inherit" })
 console.log("Running `pnpm remove terrariaserver-lite`")
 child_process.execSync("pnpm remove terrariaserver-lite", { stdio: "inherit" })
