@@ -2,7 +2,8 @@
 
 pnpm install \
   --prod \
-  --dir . \
-  --modules-dir out/node_modules \
-  --virtual-store-dir out/node_modules/.pnpm \
+  --workspace-dir "$PWD" \
+  --dir "$PWD" \
+  --modules-dir "$(realpath out/node_modules)" \
+  --virtual-store-dir "$(realpath out/node_modules/.pnpm) \
   --frozen-lockfile # drop if lockfile needs refresh
