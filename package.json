@@ -1,5 +1,6 @@
 {
   "name": "phase",
+  "type": "module",
   "version": "0.1.0",
   "description": "",
   "scripts": {
@@ -11,14 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@darkgaming/rescript-terrariapacket": "github:popstarfreas/rescript-terrariapacket#3c76ed0",
-    "@types/amqplib": "^0.5.12",
+    "@types/amqplib": "^0.10.8",
     "@types/node": "^20.6.0",
     "@types/winston": "^2.4.4",
-    "amqplib": "^0.7.1",
+    "amqplib": "^0.10.9",
     "amqplib-auto-recovery": "^0.2.0",
-    "terrariaserver-lite": "./TerrariaServer-Lite/pluginreference",
+    "terraria-packet": "github:popstarfreas/rescript-terrariapacket#c7d2f4d97565405611caccc7d0b81974654d5a61",
+    "terrariaserver-lite": "./TerrariaServer-Lite",
     "typescript": "^5.2.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "yaml": "^2.8.2"
   }
 }

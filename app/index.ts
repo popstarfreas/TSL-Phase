@@ -3,8 +3,8 @@ import Client from "terrariaserver-lite/client";
 import ChatPacketFactory from "terrariaserver-lite/packets/chatfactory";
 import TerrariaServer from "terrariaserver-lite/terrariaserver";
 import Extension from "terrariaserver-lite/extensions/extension";
-import { config } from "./configloader";
-import RabbitMQ from "./rabbitmq";
+import { config } from "./configloader.js";
+import RabbitMQ from "./rabbitmq.js";
 import * as util from "util";
 import * as uuid from "uuid";
 

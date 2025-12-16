@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import yaml from "yaml";
+
 export interface Config {
     username: string;
     password: string;
@@ -9,4 +12,8 @@ export interface Config {
     token: string;
 }
 
-export const config: Config = require(`${process.cwd()}/config/rabbitconfig.js`);
+if (!fs.existsSync(`${process.cwd()}/config/rabbitconfig.yaml`)) {
+    throw new Error("RabbitMQ config file not found. Please create a config/rabbitconfig.yaml file.");
+}
+
+export const config: Config = yaml.parse(fs.readFileSync(`${process.cwd()}/config/rabbitconfig.yaml`, "utf8"));

@@ -1,6 +1,6 @@
-import * as amqp from "amqplib/callback_api";
+import * as amqp from "amqplib/callback_api.js";
 import { EventEmitter } from "events";
-import { Config, config } from "./configloader";
+import { Config, config } from "./configloader.js";
 import * as winston from "winston";
 
 class RabbitMQ extends EventEmitter {

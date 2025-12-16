@@ -1,0 +1,443 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@types/amqplib':
+        specifier: ^0.10.8
+        version: 0.10.8
+      '@types/node':
+        specifier: ^20.6.0
+        version: 20.19.27
+      '@types/winston':
+        specifier: ^2.4.4
+        version: 2.4.4
+      amqplib:
+        specifier: ^0.10.9
+        version: 0.10.9
+      amqplib-auto-recovery:
+        specifier: ^0.2.0
+        version: 0.2.0
+      terraria-packet:
+        specifier: github:popstarfreas/rescript-terrariapacket#c7d2f4d97565405611caccc7d0b81974654d5a61
+        version: https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/c7d2f4d97565405611caccc7d0b81974654d5a61(rescript@12.0.1)
+      terrariaserver-lite:
+        specifier: ./TerrariaServer-Lite
+        version: link:TerrariaServer-Lite
+      typescript:
+        specifier: ^5.2.2
+        version: 5.9.3
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
+      yaml:
+        specifier: ^2.8.2
+        version: 2.8.2
+
+packages:
+
+  '@colors/colors@1.6.0':
+    resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
+    engines: {node: '>=0.1.90'}
+
+  '@dabh/diagnostics@2.0.8':
+    resolution: {integrity: sha512-R4MSXTVnuMzGD7bzHdW2ZhhdPC/igELENcq5IjEverBvq5hn1SXCWcsi6eSsdWP0/Ur+SItRRjAktmdoX/8R/Q==}
+
+  '@popstarfreas/packetfactory@7.1.3':
+    resolution: {integrity: sha512-hgsR+1d99UYykstXveILfRnNCKPFXwEAGImxqOu5OkrLZfMuisu2K1zWg57nzBojk8ckSp0PLupS0Lapv21ZwA==}
+
+  '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7':
+    resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7}
+    version: 16.1.0
+
+  '@rescript/core@1.6.1':
+    resolution: {integrity: sha512-vyb5k90ck+65Fgui+5vCja/mUfzKaK3kOPT4Z6aAJdHLH1eljEi1zKhXroCiCtpNLSWp8k4ulh1bdB5WS0hvqA==}
+    peerDependencies:
+      rescript: '>=11.1.0'
+
+  '@rescript/darwin-arm64@12.0.1':
+    resolution: {integrity: sha512-JJddiKKfOSc9X+2rt6IrbEUlOBaIfgjkWzCN986czZ5YV4lh3jysPVk6EQHaip2ibPkwf/nLv6Pin4t+XmdqLQ==}
+    engines: {node: '>=20.11.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rescript/darwin-x64@12.0.1':
+    resolution: {integrity: sha512-tZSeHr9MQ90oKULDIn9ugvP08eLCflH2uO02iF7z1i8RshPrfD36qFiPOn4WxzcSJuqynffNLEgeWYrnPiZ0JQ==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rescript/linux-arm64@12.0.1':
+    resolution: {integrity: sha512-V/xnkFgEvSRMlyT1XCptnWWXgySFR9aKdja74VeDyEGLc6MGmi8zopxUUFcwCQXxV/zPAFkIxjz8xMY0SBCAmQ==}
+    engines: {node: '>=20.11.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@rescript/linux-x64@12.0.1':
+    resolution: {integrity: sha512-WpVBjAvLsKATOJTckI6PDf4IFnHHxwsSVtklC+XAXbwqHLP1gqDDuVcykOOIWexxepod+QvBvEZGjzNPJ5L8gA==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@rescript/runtime@12.0.1':
+    resolution: {integrity: sha512-pMoWvllPFK0cl87vMYBVvll+DaAdPAsRuLIIJa+Q8LMhcS7cqpaZVflU3LbH+U/kv3vWaUYIfLBObwGnXw/CDg==}
+
+  '@rescript/win32-x64@12.0.1':
+    resolution: {integrity: sha512-Hv6nwb6A94qtj6b4PcIsmoWhLIcLt6wLuHpD9YNxj4/d9FkrHM/yj9ZKhKan/9rfg4wkHl1cZE898AZe/nWq9g==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@so-ric/colorspace@1.1.6':
+    resolution: {integrity: sha512-/KiKkpHNOBgkFJwu9sh48LkHSMYGyuTcSFK/qMBdnOAlrRJzRSXAOFB5qwzaVQuDl8wAvHVMkaASQDReTahxuw==}
+
+  '@types/amqplib@0.10.8':
+    resolution: {integrity: sha512-vtDp8Pk1wsE/AuQ8/Rgtm6KUZYqcnTgNvEHwzCkX8rL7AGsC6zqAfKAAJhUZXFhM/Pp++tbnUHiam/8vVpPztA==}
+
+  '@types/node@20.19.27':
+    resolution: {integrity: sha512-N2clP5pJhB2YnZJ3PIHFk5RkygRX5WO/5f0WC08tp0wd+sv0rsJk3MqWn3CbNmT2J505a5336jaQj4ph1AdMug==}
+
+  '@types/triple-beam@1.3.5':
+    resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
+
+  '@types/winston@2.4.4':
+    resolution: {integrity: sha512-BVGCztsypW8EYwJ+Hq+QNYiT/MUyCif0ouBH+flrY66O5W+KIXAMML6E/0fJpm7VjIzgangahl5S03bJJQGrZw==}
+    deprecated: This is a stub types definition. winston provides its own type definitions, so you do not need this installed.
+
+  amqplib-auto-recovery@0.2.0:
+    resolution: {integrity: sha512-O+++4nZPpDHDtTIIGYehi2L4jtItNxMe7mv4Q1Jj035+WUZbvG8fecVf6B0Uam+aKIIRz4qOTtRC6NXH2/D2vA==}
+    engines: {node: '>=6'}
+
+  amqplib@0.10.9:
+    resolution: {integrity: sha512-jwSftI4QjS3mizvnSnOrPGYiUnm1vI2OP1iXeOUz5pb74Ua0nbf6nPyyTzuiCLEE3fMpaJORXh2K/TQ08H5xGA==}
+    engines: {node: '>=10'}
+
+  async@3.2.6:
+    resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
+
+  backoff@2.5.0:
+    resolution: {integrity: sha512-wC5ihrnUXmR2douXmXLCe5O3zg3GKIyvRi/hi58a/XyRxVI+3/yM0PYueQOZXPXQ9pxBislYkw+sF9b7C/RuMA==}
+    engines: {node: '>= 0.6'}
+
+  buffer-more-ints@1.0.0:
+    resolution: {integrity: sha512-EMetuGFz5SLsT0QTnXzINh4Ksr+oo4i+UGTXEshiGCQWnsgSs7ZhJ8fzlwQ+OzEMs0MpDAMr1hxnblp5a4vcHg==}
+
+  color-convert@3.1.3:
+    resolution: {integrity: sha512-fasDH2ont2GqF5HpyO4w0+BcewlhHEZOFn9c1ckZdHpJ56Qb7MHhH/IcJZbBGgvdtwdwNbLvxiBEdg336iA9Sg==}
+    engines: {node: '>=14.6'}
+
+  color-name@2.1.0:
+    resolution: {integrity: sha512-1bPaDNFm0axzE4MEAzKPuqKWeRaT43U/hyxKPBdqTfmPF+d6n7FSoTFxLVULUJOmiLp01KjhIPPH+HrXZJN4Rg==}
+    engines: {node: '>=12.20'}
+
+  color-string@2.1.4:
+    resolution: {integrity: sha512-Bb6Cq8oq0IjDOe8wJmi4JeNn763Xs9cfrBcaylK1tPypWzyoy2G3l90v9k64kjphl/ZJjPIShFztenRomi8WTg==}
+    engines: {node: '>=18'}
+
+  color@5.0.3:
+    resolution: {integrity: sha512-ezmVcLR3xAVp8kYOm4GS45ZLLgIE6SPAFoduLr6hTDajwb3KZ2F46gulK3XpcwRFb5KKGCSezCBAY4Dw4HsyXA==}
+    engines: {node: '>=18'}
+
+  enabled@2.0.0:
+    resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
+
+  fecha@4.2.3:
+    resolution: {integrity: sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==}
+
+  fn.name@1.1.0:
+    resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
+
+  inherits@2.0.4:
+    resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
+
+  is-stream@2.0.1:
+    resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
+    engines: {node: '>=8'}
+
+  kuler@2.0.0:
+    resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
+
+  logform@2.7.0:
+    resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
+    engines: {node: '>= 12.0.0'}
+
+  ms@2.1.3:
+    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  one-time@1.0.0:
+    resolution: {integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==}
+
+  precond@0.2.3:
+    resolution: {integrity: sha512-QCYG84SgGyGzqJ/vlMsxeXd/pgL/I94ixdNFyh1PusWmTCyVfPJjZ1K1jvHtsbfnXQs2TSkEP2fR7QiMZAnKFQ==}
+    engines: {node: '>= 0.6'}
+
+  querystringify@2.2.0:
+    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+
+  readable-stream@3.6.2:
+    resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
+    engines: {node: '>= 6'}
+
+  requires-port@1.0.0:
+    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+
+  rescript@12.0.1:
+    resolution: {integrity: sha512-59JyEUyLj+IPd9VutAXpBXRGqaeaHCMtvACJNAy/oI1hjpjklQ2UJE07oLhxoWB4SDZrCxzowNUpE46UAgjOXg==}
+    engines: {node: '>=20.11.0'}
+    hasBin: true
+
+  safe-buffer@5.2.1:
+    resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
+
+  safe-stable-stringify@2.5.0:
+    resolution: {integrity: sha512-b3rppTKm9T+PsVCBEOUR46GWI7fdOs00VKZ1+9c1EWDaDMvjQc6tUwuFyIprgGgTcWoVHSKrU8H31ZHA2e0RHA==}
+    engines: {node: '>=10'}
+
+  stack-trace@0.0.10:
+    resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
+
+  string_decoder@1.3.0:
+    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
+
+  terraria-packet@https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/c7d2f4d97565405611caccc7d0b81974654d5a61:
+    resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/c7d2f4d97565405611caccc7d0b81974654d5a61}
+    version: 1.0.0
+
+  text-hex@1.0.0:
+    resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==}
+
+  triple-beam@1.4.1:
+    resolution: {integrity: sha512-aZbgViZrg1QNcG+LULa7nhZpJTZSLm/mXnHXnbAbjmN5aSa0y7V+wvv6+4WaBtpISJzThKy+PIPxc1Nq1EJ9mg==}
+    engines: {node: '>= 14.0.0'}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  url-parse@1.5.10:
+    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
+
+  util-deprecate@1.0.2:
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
+  winston-transport@4.9.0:
+    resolution: {integrity: sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==}
+    engines: {node: '>= 12.0.0'}
+
+  winston@3.19.0:
+    resolution: {integrity: sha512-LZNJgPzfKR+/J3cHkxcpHKpKKvGfDZVPS4hfJCc4cCG0CgYzvlD6yE/S3CIL/Yt91ak327YCpiF/0MyeZHEHKA==}
+    engines: {node: '>= 12.0.0'}
+
+  yaml@2.8.2:
+    resolution: {integrity: sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
+snapshots:
+
+  '@colors/colors@1.6.0': {}
+
+  '@dabh/diagnostics@2.0.8':
+    dependencies:
+      '@so-ric/colorspace': 1.1.6
+      enabled: 2.0.0
+      kuler: 2.0.0
+
+  '@popstarfreas/packetfactory@7.1.3':
+    dependencies:
+      '@popstarfreas/rescript-nodejs': https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
+    optionalDependencies:
+      rescript: 12.0.1
+
+  '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7': {}
+
+  '@rescript/core@1.6.1(rescript@12.0.1)':
+    dependencies:
+      rescript: 12.0.1
+
+  '@rescript/darwin-arm64@12.0.1':
+    optional: true
+
+  '@rescript/darwin-x64@12.0.1':
+    optional: true
+
+  '@rescript/linux-arm64@12.0.1':
+    optional: true
+
+  '@rescript/linux-x64@12.0.1':
+    optional: true
+
+  '@rescript/runtime@12.0.1': {}
+
+  '@rescript/win32-x64@12.0.1':
+    optional: true
+
+  '@so-ric/colorspace@1.1.6':
+    dependencies:
+      color: 5.0.3
+      text-hex: 1.0.0
+
+  '@types/amqplib@0.10.8':
+    dependencies:
+      '@types/node': 20.19.27
+
+  '@types/node@20.19.27':
+    dependencies:
+      undici-types: 6.21.0
+
+  '@types/triple-beam@1.3.5': {}
+
+  '@types/winston@2.4.4':
+    dependencies:
+      winston: 3.19.0
+
+  amqplib-auto-recovery@0.2.0:
+    dependencies:
+      backoff: 2.5.0
+
+  amqplib@0.10.9:
+    dependencies:
+      buffer-more-ints: 1.0.0
+      url-parse: 1.5.10
+
+  async@3.2.6: {}
+
+  backoff@2.5.0:
+    dependencies:
+      precond: 0.2.3
+
+  buffer-more-ints@1.0.0: {}
+
+  color-convert@3.1.3:
+    dependencies:
+      color-name: 2.1.0
+
+  color-name@2.1.0: {}
+
+  color-string@2.1.4:
+    dependencies:
+      color-name: 2.1.0
+
+  color@5.0.3:
+    dependencies:
+      color-convert: 3.1.3
+      color-string: 2.1.4
+
+  enabled@2.0.0: {}
+
+  fecha@4.2.3: {}
+
+  fn.name@1.1.0: {}
+
+  inherits@2.0.4: {}
+
+  is-stream@2.0.1: {}
+
+  kuler@2.0.0: {}
+
+  logform@2.7.0:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@types/triple-beam': 1.3.5
+      fecha: 4.2.3
+      ms: 2.1.3
+      safe-stable-stringify: 2.5.0
+      triple-beam: 1.4.1
+
+  ms@2.1.3: {}
+
+  one-time@1.0.0:
+    dependencies:
+      fn.name: 1.1.0
+
+  precond@0.2.3: {}
+
+  querystringify@2.2.0: {}
+
+  readable-stream@3.6.2:
+    dependencies:
+      inherits: 2.0.4
+      string_decoder: 1.3.0
+      util-deprecate: 1.0.2
+
+  requires-port@1.0.0: {}
+
+  rescript@12.0.1:
+    dependencies:
+      '@rescript/runtime': 12.0.1
+    optionalDependencies:
+      '@rescript/darwin-arm64': 12.0.1
+      '@rescript/darwin-x64': 12.0.1
+      '@rescript/linux-arm64': 12.0.1
+      '@rescript/linux-x64': 12.0.1
+      '@rescript/win32-x64': 12.0.1
+
+  safe-buffer@5.2.1: {}
+
+  safe-stable-stringify@2.5.0: {}
+
+  stack-trace@0.0.10: {}
+
+  string_decoder@1.3.0:
+    dependencies:
+      safe-buffer: 5.2.1
+
+  terraria-packet@https://codeload.github.com/popstarfreas/rescript-terrariapacket/tar.gz/c7d2f4d97565405611caccc7d0b81974654d5a61(rescript@12.0.1):
+    dependencies:
+      '@popstarfreas/packetfactory': 7.1.3
+      '@rescript/core': 1.6.1(rescript@12.0.1)
+      '@rescript/runtime': 12.0.1
+    transitivePeerDependencies:
+      - rescript
+
+  text-hex@1.0.0: {}
+
+  triple-beam@1.4.1: {}
+
+  typescript@5.9.3: {}
+
+  undici-types@6.21.0: {}
+
+  url-parse@1.5.10:
+    dependencies:
+      querystringify: 2.2.0
+      requires-port: 1.0.0
+
+  util-deprecate@1.0.2: {}
+
+  uuid@10.0.0: {}
+
+  winston-transport@4.9.0:
+    dependencies:
+      logform: 2.7.0
+      readable-stream: 3.6.2
+      triple-beam: 1.4.1
+
+  winston@3.19.0:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@dabh/diagnostics': 2.0.8
+      async: 3.2.6
+      is-stream: 2.0.1
+      logform: 2.7.0
+      one-time: 1.0.0
+      readable-stream: 3.6.2
+      safe-stable-stringify: 2.5.0
+      stack-trace: 0.0.10
+      triple-beam: 1.4.1
+      winston-transport: 4.9.0
+
+  yaml@2.8.2: {}
