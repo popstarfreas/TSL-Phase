@@ -18,9 +18,14 @@
     "amqplib": "^0.10.9",
     "amqplib-auto-recovery": "^0.2.0",
     "terraria-packet": "github:popstarfreas/rescript-terrariapacket#c7d2f4d97565405611caccc7d0b81974654d5a61",
-    "terrariaserver-lite": "./TerrariaServer-Lite",
     "typescript": "^5.2.2",
     "uuid": "^10.0.0",
     "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "terrariaserver-lite": "./TerrariaServer-Lite"
+  },
+  "peerDependencies": {
+    "terrariaserver-lite": "^2.2.0"
   }
 }
