@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
-ROOT="${PNPM_WORKSPACE_DIR:-$PWD}"
-MODULES_DIR="$ROOT/out/node_modules"
-VSTORE_DIR="$MODULES_DIR/.pnpm"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+cd "$SCRIPT_DIR"
 
-mkdir -p "$VSTORE_DIR"
+PNPM=(pnpm)
+if ! command -v pnpm >/dev/null 2>&1; then
+  PNPM=(corepack pnpm)
+fi
 
-# Use corepack to ensure a modern pnpm and pin the workspace to this repo.
-PNPM_WORKSPACE_DIR="$ROOT" corepack pnpm install \
+"${PNPM[@]}" install \
+  --ignore-workspace \
   --prod \
-  --frozen-lockfile \
-  --dir "$ROOT" \
-  --modules-dir "$MODULES_DIR" \
-  --virtual-store-dir "$VSTORE_DIR"
+  --dir . \
+  --modules-dir out/node_modules \
+  --virtual-store-dir out/node_modules/.pnpm \
+  --frozen-lockfile # drop if lockfile needs refresh
