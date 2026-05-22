@@ -17,9 +17,10 @@
     "@types/winston": "^2.4.4",
     "amqplib": "^0.10.9",
     "amqplib-auto-recovery": "^0.2.0",
-    "terraria-packet": "github:popstarfreas/rescript-terrariapacket#c7d2f4d97565405611caccc7d0b81974654d5a61",
+    "terraria-packet": "github:popstarfreas/rescript-terrariapacket#396bc430fbff3c8d700ee6dd016bc8e36419730b",
     "typescript": "^5.2.2",
     "uuid": "^10.0.0",
+    "winston": "3.3.3",
     "yaml": "^2.8.2"
   },
   "devDependencies": {
